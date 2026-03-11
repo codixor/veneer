@@ -1,0 +1,137 @@
+[package]
+name = "lightningcss-new"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+version.workspace = true
+
+[features]
+browserslist = ["browserslist-rs"]
+bundler = [
+    "dashmap",
+    "sourcemap",
+    "rayon",
+]
+cli = [
+    "atty",
+    "clap",
+    "serde_json",
+    "browserslist",
+    "jemallocator",
+]
+default = [
+    "bundler",
+    "sourcemap",
+]
+into_owned = [
+    "static-self",
+    "static-self/smallvec",
+    "static-self/indexmap",
+    "parcel_selectors/into_owned",
+]
+jsonschema = [
+    "schemars",
+    "serde",
+    "parcel_selectors/jsonschema",
+]
+nodejs = [
+    "dep:serde",
+    "dep:serde-content",
+]
+serde = [
+    "dep:serde",
+    "dep:serde-content",
+    "bitflags/serde",
+    "smallvec/serde",
+    "cssparser/serde",
+    "parcel_selectors/serde",
+    "into_owned",
+]
+sourcemap = ["parcel_sourcemap"]
+substitute_variables = [
+    "visitor",
+    "into_owned",
+]
+visitor = []
+
+[lib]
+name = "lightningcss"
+crate-type = ["rlib"]
+path = "src/lib.rs"
+
+[[bin]]
+name = "lightningcss"
+path = "src/main.rs"
+required-features = ["cli"]
+
+[[example]]
+name = "custom_at_rule"
+path = "examples/custom_at_rule.rs"
+required-features = ["visitor"]
+
+[[example]]
+name = "schema"
+path = "examples/schema.rs"
+
+[[example]]
+name = "serialize"
+path = "examples/serialize.rs"
+required-features = ["serde"]
+
+[[test]]
+name = "cli_integration_tests"
+path = "tests/cli_integration_tests.rs"
+required-features = ["cli"]
+
+[[test]]
+name = "test_cssom"
+path = "tests/test_cssom.rs"
+
+[[test]]
+name = "test_custom_parser"
+path = "tests/test_custom_parser.rs"
+
+[[test]]
+name = "test_serde"
+path = "tests/test_serde.rs"
+
+[dependencies]
+ahash = { workspace = true }
+atty = { workspace = true, optional = true }
+bitflags = { workspace = true }
+browserslist-rs = { workspace = true, optional = true }
+clap = { workspace = true, features = ["derive"], optional = true }
+const-str = { workspace = true }
+cssparser = { workspace = true }
+cssparser-color = { workspace = true }
+dashmap = { workspace = true, optional = true }
+data-encoding = { workspace = true }
+indexmap = { workspace = true, features = ["serde"] }
+itertools = { workspace = true }
+lazy_static = { workspace = true }
+lightningcss-derive = { workspace = true }
+parcel_selectors = { workspace = true }
+parcel_sourcemap = { workspace = true, features = ["json"], optional = true }
+pastey = { workspace = true }
+pathdiff = { workspace = true }
+rayon = { workspace = true, optional = true }
+schemars = { workspace = true, features = ["smallvec1", "indexmap2"], optional = true }
+serde = { workspace = true, features = ["derive"], optional = true }
+serde-content = { workspace = true, features = ["serde"], optional = true }
+serde_json = { workspace = true, optional = true }
+smallvec = { workspace = true, features = ["union"] }
+static-self = { workspace = true, optional = true }
+
+[dev-dependencies]
+assert_cmd = { workspace = true }
+assert_fs = { workspace = true }
+indoc = { workspace = true }
+predicates = { workspace = true }
+pretty_assertions = { workspace = true }
+serde_json = { workspace = true }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { workspace = true, features = ["wasm_js"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+jemallocator = { workspace = true, features = ["disable_initial_exec_tls"], optional = true }

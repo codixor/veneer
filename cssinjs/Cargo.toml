@@ -1,0 +1,51 @@
+[package]
+name = "cssinjs"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+version.workspace = true
+
+[dependencies]
+dioxus = { workspace = true, features = ["macro", "hooks", "html", "signals", "document"] }
+plugins = { workspace = true }
+header = { workspace = true }
+serde = { workspace = true, features = ["derive", "std"] }
+xxhash-rust = { workspace = true, features = ["xxh3"] }
+lightningcss = { workspace = true }
+arcswap = { workspace = true, optional = true }
+grass = { workspace = true, optional = true }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+futures-times = { workspace = true, features = ["wasm-bindgen", "dioxus-hooks"] }
+wasm-bindgen.workspace = true
+getrandom = { workspace = true, features = ["wasm_js"] }
+web-sys = { workspace = true, features = [
+  "Document",
+  "Element",
+  "Event",
+  "EventTarget",
+  "HtmlElement",
+  "HtmlHeadElement",
+  "HtmlStyleElement",
+  "Node",
+  "Window",
+] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+futures-times = { workspace = true, features = ["dioxus-hooks"] }
+
+[features]
+default = []
+scss = ["dep:grass"]
+acss = []
+arcswap = ["dep:arcswap"]
+serde = []
+web = ["header/web"]
+ssr = ["header/ssr"]
+liveview = ["header/liveview"]
+ssr_liveview = ["ssr", "liveview"]
+
+[dev-dependencies]
+playwright-rs = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+serde_json = { workspace = true, features = ["std"] }

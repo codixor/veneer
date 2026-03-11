@@ -1,0 +1,34 @@
+[package]
+name = "parcel_selectors"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+version.workspace = true
+build = "build.rs"
+description = "CSS Selectors matching for Rust - forked for lightningcss"
+
+[lib]
+name = "parcel_selectors"
+path = "lib.rs"
+
+[dependencies]
+bitflags = { workspace = true }
+cssparser = { workspace = true }
+log = "0.4"
+phf = "0.11.2"
+precomputed-hash = "0.1"
+rustc-hash = "2"
+schemars = { workspace = true, features = ["smallvec1"], optional = true }
+serde = { workspace = true, features = ["derive"], optional = true }
+smallvec = { workspace = true }
+static-self = { workspace = true, optional = true }
+
+[build-dependencies]
+phf_codegen = "0.11"
+
+[features]
+bench = []
+into_owned = ["static-self"]
+jsonschema = ["serde", "schemars"]
+serde = ["dep:serde", "smallvec/serde"]
+smallvec = ["static-self/smallvec"]

@@ -1,0 +1,185 @@
+[tools]
+rust = "latest"
+python = "3.12"
+node                    = "lts"
+"cargo:dioxus-cli"     = "latest"
+"cargo:cargo-nextest"  = "latest"
+"npm:@tailwindcss/cli"  = "latest"
+"npm:playwright"      = "1.58.2"
+"npm:tsx"              = "latest"
+"pipx:fonttools[brotli]" = "latest"
+java = "temurin-21.0.10+7.0.LTS"
+
+
+[env]
+PROJECT_NAME = "comp"
+CARGO_INCREMENTAL=0
+CARGO_TARGET_DIR="/home/barracuda/.cargo-targets/comp"
+
+[settings]
+env_shell_expand = false
+
+[tasks.fmt]
+run = "cargo fmt --all"
+
+[tasks.fmt-check]
+run = "cargo fmt --all -- --check"
+
+[tasks.clippy]
+run = "cargo clippy --all-targets --all-features -- -D warnings"
+
+[tasks.test]
+run = "cargo test --all --all-features"
+
+[tasks.nextest]
+run = "cargo nextest run --all-features"
+
+[tasks.check]
+run = "mise run fmt-check && mise run clippy && mise run test"
+
+[tasks.dxweb]
+run = "CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-web dx serve --platform web -p preview_app --features web --port 8086"
+
+[tasks.dxdesk]
+run = "CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-desktop dx serve --platform desktop -p preview_app --features desktop"
+
+[tasks.dxssr]
+run = "CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-ssr dx serve --platform server -p preview_app --features ssr --port 8087"
+
+[tasks.dxliveview]
+run = "CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-liveview cargo run -p preview_app --features liveview"
+
+[tasks.older-dxdesk]
+run = "cd /home/barracuda/comp/older && CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-older-desktop dx serve --platform desktop -p preview_app"
+
+[tasks.older-dxliveview]
+run = "cd /home/barracuda/comp/older && DX_PORT=3031 CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-older-liveview cargo run -p preview_app --features liveview"
+
+[tasks.older-10e4-dxdesk]
+run = "cd /home/barracuda/comp/older/history/10e4f969db86fea537aa14129099160737a9ce13 && CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-older-10e4-desktop cargo run -p preview_app"
+
+[tasks.dxnative-test]
+run = "DX_PORT=8090 CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-desktop-test dx serve --platform desktop -p preview_app --features desktop"
+
+[tasks.dxwasm-test]
+run = "CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-web-test dx serve --platform web -p preview_app --features web --port 8091"
+
+[tasks.dxliveview-test]
+run = "DX_PORT=8092 CARGO_TARGET_DIR=/home/barracuda/.cargo-targets/comp-liveview-test cargo run -p preview_app --features liveview"
+
+[tasks.clock-human-parity]
+run = "bash .parity/clock/scripts/parity_human_clock_live.sh"
+
+[tasks.style-layout-breadcrumb-parity]
+run = "DX_PORT=${DX_PORT:-8093} bash .parity/style/scripts/parity_layout_breadcrumb_live.sh"
+
+[tasks.style-route-liveview-parity]
+run = "STYLE_LIVEVIEW_PORT=${STYLE_LIVEVIEW_PORT:-8092} bash .parity/style/scripts/parity_route_style_liveview.sh"
+
+[tasks.pw-version]
+run = "mise exec npm:playwright@1.58.2 -- playwright --version"
+
+[tasks.pwinstall]
+run = "mise exec npm:playwright@1.58.2 -- playwright install chromium firefox webkit"
+
+[tasks.pwinstall-chromium]
+run = "mise exec npm:playwright@1.58.2 -- playwright install chromium"
+
+[tasks.iconnamed-parity]
+run = "bash .parity/icon-named/scripts/live_parity.sh"
+
+[tasks.iconnamed-parity-firefox]
+run = "DX_PORT=8093 ICON_NAMED_PARITY_BROWSER=firefox bash .parity/icon-named/scripts/live_parity.sh"
+
+[tasks.iconnamed-parity-webkit]
+run = "DX_PORT=8094 ICON_NAMED_PARITY_BROWSER=webkit bash .parity/icon-named/scripts/live_parity.sh"
+
+[tasks.iconnamed-parity-all]
+run = "mise run iconnamed-parity && mise run iconnamed-parity-firefox && mise run iconnamed-parity-webkit"
+
+[tasks.cssbundle]
+run = "bash cssinjs/scripts/release_web_bundle.sh --skip-build"
+
+[tasks.dxweb-release]
+run = "bash cssinjs/scripts/release_web_bundle.sh"
+
+[tasks.cssverify-fast]
+run = "bash .parity/cssinjs/scripts/verify.sh --profile fast"
+
+[tasks.cssverify-parity]
+run = "bash .parity/cssinjs/scripts/verify.sh --profile parity"
+
+[tasks.cssinjs-runtime-order-parity]
+run = "bash .parity/cssinjs/scripts/parity_runtime_order_live.sh"
+
+[tasks.codex-agent-setup]
+run = "bash agents/codex/scripts/setup_3_agents.sh"
+
+[tasks.codex-agent1]
+run = "/home/barracuda/comp/.codex-agents/codex-agent1.sh"
+
+[tasks.codex-agent2]
+run = "/home/barracuda/comp/.codex-agents/codex-agent2.sh"
+
+[tasks.codex-agent3]
+run = "/home/barracuda/comp/.codex-agents/codex-agent3.sh"
+
+[tasks.codex-agent4]
+run = "/home/barracuda/comp/.codex-agents/codex-agent4.sh"
+
+[tasks.codex-subtask]
+run = "/home/barracuda/comp/.codex-agents/subtask.sh"
+
+[tasks.figma-theme-export]
+run = "bash .parity/figma/scripts/export_theme_snapshot.sh"
+
+[tasks.figma-normalize]
+run = "bash .parity/figma/scripts/normalize_export.sh"
+
+[tasks.figma-theme-parity]
+run = "bash .parity/figma/scripts/run_theme_parity.sh"
+
+[tasks.figma-theme-parity-sample]
+run = "bash .parity/figma/scripts/run_sample_parity.sh"
+
+[tasks.figma-color-lanes-export]
+run = "bash .parity/figma/scripts/export_color_lanes.sh"
+
+[tasks.figma-color-lanes-parity]
+run = "bash .parity/figma/scripts/run_color_lanes_parity.sh"
+
+[tasks.figma-color-lanes-parity-mocha]
+run = "FIGMA_INPUT=/home/barracuda/comp/.parity/figma/manifest/mocha_magenta_figma_export.json FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#1e1e2e bash .parity/figma/scripts/run_color_lanes_parity.sh"
+
+[tasks.figma-color-lanes-parity-mocha-light]
+run = "FIGMA_INPUT=/home/barracuda/comp/.parity/figma/manifest/mocha_magenta_light_figma_export.json FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#eff1f5 FIGMA_COLOR_THEME_MODE=default bash .parity/figma/scripts/run_color_lanes_parity.sh"
+
+[tasks.figma-color-lanes-visual]
+run = "FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#1e1e2e bash .parity/figma/scripts/capture_color_lanes_screenshot.sh"
+
+[tasks.figma-color-lanes-visual-light]
+run = "FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#eff1f5 FIGMA_COLOR_LANES_ROUTE=/figma-color-lanes-light FIGMA_READY_SELECTOR=#figma-color-lanes-light-ready bash .parity/figma/scripts/capture_color_lanes_screenshot.sh"
+
+[tasks.figma-theme-mocha-visual]
+run = "FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#1e1e2e FIGMA_COLOR_LANES_ROUTE=/figma-theme-mocha FIGMA_READY_SELECTOR=#figma-theme-mocha-ready bash .parity/figma/scripts/capture_color_lanes_screenshot.sh"
+
+[tasks.figma-color-lens-visual]
+run = "FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#1e1e2e FIGMA_COLOR_LANES_ROUTE=/figma-color-lens FIGMA_READY_SELECTOR=#figma-color-lens-ready bash .parity/figma/scripts/capture_color_lanes_screenshot.sh"
+
+[tasks.theme-preset-palettes-visual]
+run = "FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#1e1e2e FIGMA_COLOR_LANES_ROUTE=/theme-preset-palettes FIGMA_READY_SELECTOR=#theme-preset-palettes-ready FIGMA_VISUAL_TITLE='Theme Preset Palettes Visual Parity' bash .parity/figma/scripts/capture_color_lanes_screenshot.sh"
+
+[tasks.theme-shared-ladders-visual]
+run = "FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#1e1e2e FIGMA_COLOR_LANES_ROUTE=/theme-shared-ladders FIGMA_READY_SELECTOR=#theme-shared-ladders-ready FIGMA_VISUAL_TITLE='Theme Shared Ladders Visual Parity' bash .parity/figma/scripts/capture_color_lanes_screenshot.sh"
+
+[tasks.theme-component-overrides-visual]
+run = "FIGMA_COLOR_PRIMARY=#f5c2e7 FIGMA_COLOR_BG=#1e1e2e FIGMA_COLOR_LANES_ROUTE=/theme-component-overrides FIGMA_READY_SELECTOR=#theme-component-overrides-ready FIGMA_VISUAL_TITLE='Theme Component Overrides Visual Parity' bash .parity/figma/scripts/capture_color_lanes_screenshot.sh"
+
+[tasks.theme-visual-parity]
+run = "bash .parity/figma/scripts/theme_visual_workflow.sh"
+
+[tasks.theme-icon-visual-parity]
+run = "bash .parity/figma/scripts/theme_icon_visual_workflow.sh"
+
+[tasks.seo-liveview-head-parity]
+run = "bash .parity/seo/scripts/parity_liveview_head.sh"

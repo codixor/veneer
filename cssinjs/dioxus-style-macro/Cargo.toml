@@ -1,0 +1,21 @@
+[package]
+name = "dioxus-style-macro"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+version.workspace = true
+
+[lib]
+proc-macro = true
+
+[features]
+default = []
+scss = ["cssinjs/scss"]
+legacy-inline-style-fallback = []
+
+[dependencies]
+proc-macro2.workspace = true
+quote.workspace = true
+syn = { workspace = true, features = ["full", "extra-traits"] }
+lightningcss = { workspace = true }
+cssinjs.workspace = true
